@@ -13,7 +13,7 @@ public class SimpleMover : MonoBehaviour
     void Start()
     {
 		bigBad.updateUpAxis = false;
-		bigBad.updateRotation = false;
+		//bigBad.updateRotation = false;
     }
 
     // Update is called once per frame
@@ -27,6 +27,8 @@ public class SimpleMover : MonoBehaviour
 			dest.z = 0;
 			bigBad.SetDestination (dest) ;
 		}
+
+
 		/*
 		if (Input.GetAxis ("Horizontal") > 0.0f) {
 			newPosition += (Vector3)( Vector2.right * Time.deltaTime * PlayerSpeed);
