@@ -1,24 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class SimpleMover : MonoBehaviour
 {
-	public Rigidbody2D rb;
+	// public Rigidbody2D rb;
 	public float PlayerSpeed = 10.0f;
+	public NavMeshAgent bigBad;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+		bigBad.updateUpAxis = false;
+		bigBad.updateRotation = false;
     }
 
     // Update is called once per frame
     void Update()
     {
 		Vector3 newPosition = Vector3.zero;
+		Vector3 dest;
 
-
+		if (Input.GetMouseButtonDown (0)) {
+			dest = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+			dest.z = 0;
+			bigBad.SetDestination (dest) ;
+		}
+		/*
 		if (Input.GetAxis ("Horizontal") > 0.0f) {
 			newPosition += (Vector3)( Vector2.right * Time.deltaTime * PlayerSpeed);
 		} else if (Input.GetAxis ("Horizontal") < 0.0f) {
@@ -33,5 +42,6 @@ public class SimpleMover : MonoBehaviour
 
 
 		rb.MovePosition (transform.position + newPosition);
+		*/
     }
 }
