@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 rawAimInput;
     private Vector2 aimInput;
 
-    private bool inputPaused;
+    private bool isPaused;
 
     private GameObject flashlight;
     private GameObject torch;
@@ -22,6 +22,8 @@ public class PlayerMovement : MonoBehaviour
     public float runSpeed = 9.0f;
     private float moveSpeed;
 
+    private GameManager gameManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +33,8 @@ public class PlayerMovement : MonoBehaviour
 
         flashlight = transform.Find("Flashlight").gameObject;
         torch = transform.Find("Torch").gameObject;
+
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -57,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move(InputAction.CallbackContext ctx)
     {
-        if (!inputPaused)
+        if (!GameManager.isPaused)
         {
             Vector2 rawInput = ctx.ReadValue<Vector2>();
 
@@ -67,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Aim(InputAction.CallbackContext ctx)
     {
-        if (!inputPaused)
+        if (!GameManager.isPaused)
         {
             rawAimInput = ctx.ReadValue<Vector2>();
 
@@ -77,48 +81,66 @@ public class PlayerMovement : MonoBehaviour
 
     public void ToggleLight(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed)
+        if (!GameManager.isPaused)
         {
-            if (!usingTorch)
+            if (ctx.performed)
             {
-                //torch.SetActive(false);
-                flashlight.SetActive(!flashlight.activeInHierarchy); }
-            else
-            {
-                //flashlight.SetActive(false);
-                torch.SetActive(!torch.activeInHierarchy);
+                if (!usingTorch)
+                {
+                    //torch.SetActive(false);
+                    flashlight.SetActive(!flashlight.activeInHierarchy);
+                }
+                else
+                {
+                    //flashlight.SetActive(false);
+                    torch.SetActive(!torch.activeInHierarchy);
+                }
             }
         }
     }
 
     public void SwitchLightTypes(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed)
+        if (!GameManager.isPaused)
         {
-            usingTorch = !usingTorch;
+            if (ctx.performed)
+            {
+                usingTorch = !usingTorch;
 
-            if (usingTorch)
-            {
-                torch.SetActive(true);
-                flashlight.SetActive(false);
-            }
-            else
-            {
-                flashlight.SetActive(true);
-                torch.SetActive(false);
+                if (usingTorch)
+                {
+                    torch.SetActive(true);
+                    flashlight.SetActive(false);
+                }
+                else
+                {
+                    flashlight.SetActive(true);
+                    torch.SetActive(false);
+                }
             }
         }
     }
 
     public void Run(InputAction.CallbackContext ctx)
     {
-        if (ctx.started)
+        if (!GameManager.isPaused)
         {
-            moveSpeed = runSpeed;
+            if (ctx.started)
+            {
+                moveSpeed = runSpeed;
+            }
+            else if (ctx.canceled)
+            {
+                moveSpeed = walkSpeed;
+            }
         }
-        else if (ctx.canceled)
+    }
+
+    public void Pause(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
         {
-            moveSpeed = walkSpeed;
+            gameManager.TogglePause();
         }
     }
 
