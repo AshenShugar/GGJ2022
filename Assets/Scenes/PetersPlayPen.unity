@@ -180,13 +180,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5808918297310789412, guid: f7856314053914afc92a66e388990ed1, type: 3}
-      propertyPath: PitchRange
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5808918297310789412, guid: f7856314053914afc92a66e388990ed1, type: 3}
-      propertyPath: HeartBeatUpdateTime
-      value: 0.3
-      objectReference: {fileID: 0}
+      propertyPath: PlayerCharacter
+      value: 
+      objectReference: {fileID: 1618949999}
     - target: {fileID: 5808918297310789413, guid: f7856314053914afc92a66e388990ed1, type: 3}
       propertyPath: m_Name
       value: BigBad
@@ -661,6 +657,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &977875161 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5808918297310789413, guid: f7856314053914afc92a66e388990ed1, type: 3}
+  m_PrefabInstance: {fileID: 432543600}
+  m_PrefabAsset: {fileID: 0}
+--- !u!58 &977875166
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 977875161}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 1.5
 --- !u!1 &991166031
 GameObject:
   m_ObjectHideFlags: 0
@@ -3738,6 +3755,11 @@ MonoBehaviour:
   m_Area: 1
   m_IgnoreFromBuild: 0
   m_AffectedAgents: ffffffff
+--- !u!1 &1618949999 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 823239725623701122, guid: b504e709ee4dc4c8da97a7d3b10debda, type: 3}
+  m_PrefabInstance: {fileID: 6080787400231896933}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1704236715
 GameObject:
   m_ObjectHideFlags: 0
@@ -4138,6 +4160,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 823239725623701122, guid: b504e709ee4dc4c8da97a7d3b10debda, type: 3}
       propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 823239725623701122, guid: b504e709ee4dc4c8da97a7d3b10debda, type: 3}
+      propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 823239725623701124, guid: b504e709ee4dc4c8da97a7d3b10debda, type: 3}

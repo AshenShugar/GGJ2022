@@ -21,6 +21,7 @@ public class BigBadController : MonoBehaviour
 	private AudioMixer _HBMixer;
 	[SerializeField]
 	private AudioSource _HBSource;
+	private GameManager _gm;
 
 	public bool GameRunning = true;
 
@@ -32,8 +33,19 @@ public class BigBadController : MonoBehaviour
 
 		if(PlayerCharacter == null)
 			Debug.Log ("Player doesn't exist!");
+
+		if (_gm == null)
+			_gm = FindObjectOfType<GameManager> ();
 		
 		StartCoroutine (HeartBeatControl());
+	}
+
+	public void OnCollisionEnter2D (Collision2D collision)
+	{
+		if (collision.gameObject.tag == "Player") {
+			// Game over
+			_gm.ChangeScene (GameManager.Scene.BadEnd);
+		}
 	}
 
 	public IEnumerator HeartBeatControl ()
