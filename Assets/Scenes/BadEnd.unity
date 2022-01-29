@@ -273,6 +273,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _as: {fileID: 1423982926}
   FadeInTime: 4
+  MenuSceneName: MenuScene
 --- !u!82 &1423982926
 AudioSource:
   m_ObjectHideFlags: 0
@@ -285,7 +286,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 10a87a90438fe49b4a1cbd9980b94655, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
