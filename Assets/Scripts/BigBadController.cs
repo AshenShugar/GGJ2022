@@ -16,6 +16,11 @@ public class BigBadController : MonoBehaviour
 	public float HeartBeatUpdateTime = 2.0f;	// How often to calculate how far Big Bad is from player
 	void Start ()
 	{
+		if (PlayerCharacter == null)
+			PlayerCharacter = FindObjectOfType<PlayerMovement> ().gameObject;
+		else
+			Debug.Log ("Player doesn't exist!");
+		
 		StartCoroutine (HeartBeatControl());
 	}
 
