@@ -3793,7 +3793,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.5921305, y: 1}
+    m_SensorSize: {x: 1.8981693, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -4003,7 +4003,7 @@ MonoBehaviour:
   m_VoxelSize: 0.1
   m_BuildHeightMesh: 0
   m_HideEditorLogs: 0
-  m_NavMeshData: {fileID: 23800000, guid: 803e8e5743f3a45b2906dd08250cebb4, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 864b52868b8c3414bb235fa4126509da, type: 2}
 --- !u!4 &1886239326
 Transform:
   m_ObjectHideFlags: 0
@@ -4134,6 +4134,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 823239725623701122, guid: b504e709ee4dc4c8da97a7d3b10debda, type: 3}
       propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 823239725623701122, guid: b504e709ee4dc4c8da97a7d3b10debda, type: 3}
+      propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 823239725623701124, guid: b504e709ee4dc4c8da97a7d3b10debda, type: 3}
