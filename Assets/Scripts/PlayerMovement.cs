@@ -64,8 +64,12 @@ public class PlayerMovement : MonoBehaviour
 
 	public void UpdateBigBad ()
 	{
-		if (flashlight.activeInHierarchy || torch.activeInHierarchy)
-			BBC.Target = transform.position;
+		if (usingTorch) {
+			if (torch.activeInHierarchy)
+				BBC.Target = transform.position;
+		} else
+			if (flashlight.activeInHierarchy)
+				BBC.Target = transform.position;
 
 	}
 
