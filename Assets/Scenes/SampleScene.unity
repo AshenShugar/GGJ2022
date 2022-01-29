@@ -135,6 +135,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1073980515, guid: f7856314053914afc92a66e388990ed1, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 97d1abbf202d84ad4a1430dbf512a20d, type: 3}
     - target: {fileID: 5808918297310789402, guid: f7856314053914afc92a66e388990ed1, type: 3}
       propertyPath: m_RootOrder
       value: 11
@@ -3789,7 +3793,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.9354275, y: 1}
+    m_SensorSize: {x: 1.5921305, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
