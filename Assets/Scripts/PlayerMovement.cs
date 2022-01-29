@@ -22,7 +22,9 @@ public class PlayerMovement : MonoBehaviour
     public float runSpeed = 9.0f;
     private float moveSpeed;
 
-	  private BigBadController BBC;
+    private Animator playerAnim;
+
+	private BigBadController BBC;
 
     private GameManager gameManager;
 
@@ -37,6 +39,8 @@ public class PlayerMovement : MonoBehaviour
         torch = transform.Find("Torch").gameObject;
 		BBC = FindObjectOfType<BigBadController> ();
 
+        playerAnim = GetComponent<Animator>();
+
        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
@@ -49,7 +53,19 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         //movement
-        rb.velocity = moveInput * moveSpeed;
+        if (moveInput != Vector2.zero)
+        {
+            rb.velocity = moveInput * moveSpeed;
+            playerAnim.SetTrigger("Walk");
+
+
+            float angle = Mathf.Atan2(moveInput.y, moveInput.x) * Mathf.Rad2Deg;
+            rb.rotation = angle-90;
+        }
+        else
+        {
+            playerAnim.SetTrigger("Idle");
+        }
 
         //aiming of light
         Vector3 viewportMousePos = Camera.main.ScreenToViewportPoint(rawAimInput);
