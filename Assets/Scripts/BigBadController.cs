@@ -29,7 +29,8 @@ public class BigBadController : MonoBehaviour
 	{
 		if (PlayerCharacter == null)
 			PlayerCharacter = FindObjectOfType<PlayerMovement> ().gameObject;
-		else
+
+		if(PlayerCharacter == null)
 			Debug.Log ("Player doesn't exist!");
 		
 		StartCoroutine (HeartBeatControl());
