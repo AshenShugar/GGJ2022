@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Audio;
 
 
 public class BigBadController : MonoBehaviour
@@ -13,7 +14,17 @@ public class BigBadController : MonoBehaviour
 	[SerializeField]
 	private GameObject PlayerCharacter;
 	private float distanceFromPlayer;
-	public float HeartBeatUpdateTime = 2.0f;	// How often to calculate how far Big Bad is from player
+	public float PitchRange = 3.0f;
+	public float HeartBeatUpdateTime = 1.0f;    // How often to calculate how far Big Bad is from player
+	public float SafeDistanceFromPlayer = 10.0f;	// Any further than this and the heart beat stays the same.
+	[SerializeField]
+	private AudioMixer _HBMixer;
+	[SerializeField]
+	private AudioSource _HBSource;
+
+	public bool GameRunning = true;
+
+
 	void Start ()
 	{
 		if (PlayerCharacter == null)
@@ -26,11 +37,20 @@ public class BigBadController : MonoBehaviour
 
 	public IEnumerator HeartBeatControl ()
 	{
-		distanceFromPlayer = (PlayerCharacter.transform.position - transform.position).magnitude;
+		while (GameRunning) {
+			distanceFromPlayer = (PlayerCharacter.transform.position - transform.position).magnitude;
 
-		// adjust timing/volume of heartbeat sound and any visual effects that match it.
+			// adjust timing/volume of heartbeat sound and any visual effects that match it.
+			if (distanceFromPlayer > SafeDistanceFromPlayer) {
+				_HBSource.pitch = 1;
+				_HBMixer.SetFloat ("pitchBend", 1 / _HBSource.pitch);
+			} else {
+				_HBSource.pitch = 1 + PitchRange - ((PitchRange * distanceFromPlayer) / SafeDistanceFromPlayer );
+				_HBMixer.SetFloat ("pitchBend", 1 / _HBSource.pitch);
+			}
 
-		yield return new WaitForSeconds(HeartBeatUpdateTime);
+			yield return new WaitForSeconds (HeartBeatUpdateTime);
+		}
 	}
 
 	public bool HasTarget {
