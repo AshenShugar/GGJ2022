@@ -22,11 +22,13 @@ public class SimpleMover : MonoBehaviour
 		Vector3 newPosition = Vector3.zero;
 		Vector3 dest;
 
+        /* Wont work in new input sytem
 		if (Input.GetMouseButtonDown (0)) {
 			dest = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 			dest.z = 0;
 			bigBad.SetDestination (dest) ;
 		}
+        */
 
 
 		/*
