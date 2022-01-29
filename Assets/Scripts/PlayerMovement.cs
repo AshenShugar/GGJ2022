@@ -22,6 +22,8 @@ public class PlayerMovement : MonoBehaviour
     public float runSpeed = 9.0f;
     private float moveSpeed;
 
+	private BigBadController BBC;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
 
         flashlight = transform.Find("Flashlight").gameObject;
         torch = transform.Find("Torch").gameObject;
+		BBC = FindObjectOfType<BigBadController> ();
     }
 
     // Update is called once per frame
@@ -54,6 +57,13 @@ public class PlayerMovement : MonoBehaviour
 
         flashlight.transform.rotation = Quaternion.Euler(0, 0, rotAngle - 90);
     }
+
+	public void UpdateBigBad ()
+	{
+		if (flashlight.activeInHierarchy || torch.activeInHierarchy)
+			BBC.Target = transform.position;
+
+	}
 
     public void Move(InputAction.CallbackContext ctx)
     {
@@ -82,12 +92,18 @@ public class PlayerMovement : MonoBehaviour
             if (!usingTorch)
             {
                 //torch.SetActive(false);
-                flashlight.SetActive(!flashlight.activeInHierarchy); }
+                flashlight.SetActive(!flashlight.activeInHierarchy); 
+				BBC.HasTarget = flashlight.activeInHierarchy;
+			}
             else
             {
                 //flashlight.SetActive(false);
                 torch.SetActive(!torch.activeInHierarchy);
+				BBC.HasTarget = torch.activeInHierarchy;
             }
+			UpdateBigBad ();	// doesn't matter if this is called when turning the light off, as the BB should already be aiming at this spot.
+			// It does mean that turning on your light will get the BB moving straight away.
+
         }
     }
 
@@ -107,6 +123,8 @@ public class PlayerMovement : MonoBehaviour
                 flashlight.SetActive(true);
                 torch.SetActive(false);
             }
+			BBC.HasTarget = true;   // As switching light types always turns one of them on at present.
+			UpdateBigBad ();
         }
     }
 

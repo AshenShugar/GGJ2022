@@ -28,20 +28,23 @@ public class BigBadController : MonoBehaviour
 		yield return new WaitForSeconds(HeartBeatUpdateTime);
 	}
 
+	public bool HasTarget {
+		set {
+			if (value)
+				bigBad.speed = FastSpeed;
+			else
+				bigBad.speed = SlowSpeed;
+		}
+	}
+
 	public Vector3 Target {
 		set {
-			if (value == null) {
-				bigBad.isStopped = true;
-				bigBad.speed = SlowSpeed;
-			}
-			else {
 				// if the target destination has a z value that doesn't match the navmesh, it won't move.
 				_targetDestination = value;
 				_targetDestination.z = 0;
 				bigBad.SetDestination (_targetDestination);
 				bigBad.speed = FastSpeed;
 			}
-		}
 	}
 
 }
