@@ -11,7 +11,8 @@
                     "id": "6c8877f1-6d2a-4820-8cb2-1b971a2ab27f",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Aim",
@@ -19,7 +20,8 @@
                     "id": "40efa950-81df-49be-a9c6-56c0820ad929",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "ToggleLight",
@@ -27,7 +29,8 @@
                     "id": "f5bd655e-9072-463c-b7fd-8e3121036ec3",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Run",
@@ -35,7 +38,17 @@
                     "id": "9c364a90-d388-419f-aa25-3c149af4a9e8",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SwitchLightTypes",
+                    "type": "Button",
+                    "id": "000f3680-22b4-4848-8de2-7e9ca6a5e4fb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -124,6 +137,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Run",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3ca513e9-2168-45da-a5f5-7097a1f3d732",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchLightTypes",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

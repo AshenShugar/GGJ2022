@@ -14,6 +14,9 @@ public class PlayerMovement : MonoBehaviour
     private bool inputPaused;
 
     private GameObject flashlight;
+    private GameObject torch;
+
+    private bool usingTorch;    //quick and dirty, if false (default) then Flashlight is active
 
     public float walkSpeed = 5.0f;
     public float runSpeed = 9.0f;
@@ -27,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
         moveSpeed = walkSpeed;
 
         flashlight = transform.Find("Flashlight").gameObject;
+        torch = transform.Find("Torch").gameObject;
     }
 
     // Update is called once per frame
@@ -75,7 +79,34 @@ public class PlayerMovement : MonoBehaviour
     {
         if (ctx.performed)
         {
-            flashlight.SetActive(!flashlight.activeInHierarchy);
+            if (!usingTorch)
+            {
+                //torch.SetActive(false);
+                flashlight.SetActive(!flashlight.activeInHierarchy); }
+            else
+            {
+                //flashlight.SetActive(false);
+                torch.SetActive(!torch.activeInHierarchy);
+            }
+        }
+    }
+
+    public void SwitchLightTypes(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        {
+            usingTorch = !usingTorch;
+
+            if (usingTorch)
+            {
+                torch.SetActive(true);
+                flashlight.SetActive(false);
+            }
+            else
+            {
+                flashlight.SetActive(true);
+                torch.SetActive(false);
+            }
         }
     }
 
