@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
 
         flashlight = transform.Find("Flashlight").gameObject;
         torch = transform.Find("Torch").gameObject;
-		   BBC = FindObjectOfType<BigBadController> ();
+		BBC = FindObjectOfType<BigBadController> ();
 
        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }

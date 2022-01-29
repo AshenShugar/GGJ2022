@@ -25,6 +25,7 @@ public class BigBadController : MonoBehaviour
 
 	public bool GameRunning = true;
 
+	float[] HeartBeatTimeArray = {0f,0.7f,1.3f,1.8f,2.35f,2.8f,3.2f,3.6f,4.0f,4.4f,4.8f,5.2f };
 
 	void Start ()
 	{
@@ -37,7 +38,7 @@ public class BigBadController : MonoBehaviour
 		if (_gm == null)
 			_gm = FindObjectOfType<GameManager> ();
 		
-		StartCoroutine (HeartBeatControl());
+		StartCoroutine (HeartBeatControl2());
 	}
 
 	public void OnCollisionEnter2D (Collision2D collision)
@@ -66,12 +67,34 @@ public class BigBadController : MonoBehaviour
 		}
 	}
 
+	// Not the right way to do this, but I was interested in seeing if I could
+	public IEnumerator HeartBeatControl2 ()
+	{
+		int index;
+		while (GameRunning) {
+			distanceFromPlayer = (PlayerCharacter.transform.position - transform.position).magnitude;
+
+			if (distanceFromPlayer > SafeDistanceFromPlayer) {
+				index = 0;
+			} else {
+				index = 10 - Mathf.RoundToInt (distanceFromPlayer);
+			}
+			_HBSource.time = HeartBeatTimeArray [index];
+			_HBSource.Play ();
+			_HBSource.SetScheduledEndTime (AudioSettings.dspTime + HeartBeatTimeArray [index + 1] - HeartBeatTimeArray [index]);
+
+			yield return new WaitForSeconds( HeartBeatTimeArray [index + 1] - HeartBeatTimeArray [index] );
+		}
+	}
+
 	public bool HasTarget {
 		set {
-			if (value)
-				bigBad.speed = FastSpeed;
-			else
-				bigBad.speed = SlowSpeed;
+			if (bigBad != null) {
+				if (value)
+					bigBad.speed = FastSpeed;
+				else
+					bigBad.speed = SlowSpeed;
+			}
 		}
 	}
 
