@@ -1134,6 +1134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SceneToPlayName: IntroCutscene
+  _as: {fileID: 1997638801}
 --- !u!4 &1997638800
 Transform:
   m_ObjectHideFlags: 0

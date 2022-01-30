@@ -452,6 +452,9 @@ MonoBehaviour:
   FadeInTime: 4
   MenuSceneName: MenuScene
   Img: {fileID: 1092699630}
+  sounds:
+  - {fileID: 8300000, guid: 4392a005c746c4a3299e9fb057e36e85, type: 3}
+  - {fileID: 8300000, guid: 025d5c2c6a8eb4117bcfd726d86799b2, type: 3}
 --- !u!82 &1423982926
 AudioSource:
   m_ObjectHideFlags: 0

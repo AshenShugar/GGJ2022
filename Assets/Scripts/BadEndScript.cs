@@ -16,12 +16,15 @@ public class BadEndScript : MonoBehaviour
 	private string MenuSceneName = "MenuScene";
 	[SerializeField]
 	private Image Img;
+	[SerializeField]
+	private AudioClip [] sounds;
 
     // Start is called before the first frame update
     void Start()
     {
+		_as.clip = sounds [0];
 		_as.Play ();
-		_as.SetScheduledEndTime (AudioSettings.dspTime + _as.clip.length - 1.0f);
+		_as.SetScheduledEndTime (AudioSettings.dspTime + _as.clip.length );
 		_timer = _as.clip.length;
 
 		StartCoroutine (SoundPlaying ());
@@ -47,10 +50,12 @@ public class BadEndScript : MonoBehaviour
 	{
 		float timer = 0;
 		Color tmpColour = Img.color;
-		while (timer < FadeInTime) {
+		_as.clip = sounds [1];
+		_as.Play ();
+		while (timer < _as.clip.length) {
 			timer += Time.deltaTime;
 			// Do fade in some more.
-			tmpColour.a = timer / (FadeInTime * 0.5f);
+			tmpColour.a = timer / (_as.clip.length * 0.5f);
 			Img.color = tmpColour;
 
 			yield return null;
