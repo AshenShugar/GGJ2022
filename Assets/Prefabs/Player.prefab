@@ -371,6 +371,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: ff84b7f7-a5f3-4bc2-ba2b-10dc15c6b839
     m_ActionName: gameplayActions/Pause[/Keyboard/p]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 823239725623701121}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: PickUpItem
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 59d74ad3-9bc2-49dc-b4ea-47e48edd1bd3
+    m_ActionName: gameplayActions/PickUp[/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: gameplayActions
