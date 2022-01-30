@@ -39,6 +39,8 @@ public class PlayerMovement : MonoBehaviour
 
     private SpriteRenderer fog;
 
+    private GameObject pickupPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -58,7 +60,9 @@ public class PlayerMovement : MonoBehaviour
 
         dialog = GameObject.Find("Dialog Label").GetComponent<TextMeshProUGUI>();
 
-        fog = GameObject.Find("Dialog Label").GetComponent<SpriteRenderer>();
+        fog = GameObject.Find("Fog").GetComponent<SpriteRenderer>();
+
+        pickupPrefab = Resources.Load("cfx_pickup") as GameObject;
     }
 
     // Update is called once per frame
@@ -210,6 +214,8 @@ public class PlayerMovement : MonoBehaviour
                        // do something
                     }
 
+                    Instantiate(pickupPrefab, rb.position, Quaternion.identity);
+
                     Destroy(nearbyItem);
                     nearItem = false;
                 }
@@ -260,13 +266,13 @@ public class PlayerMovement : MonoBehaviour
     {
         globalLight.intensity = 0.5f;
 
-        fog.color = Color.gray;
+        fog.material.color = Color.gray;
 
         yield return new WaitForSecondsRealtime(duration);
 
         globalLight.intensity = 0.001f;
 
-        fog.color = Color.white;
+        fog.material.color = Color.white;
     }
 
     IEnumerator moveFaster(float duration)
