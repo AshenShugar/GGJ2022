@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
+using TMPro;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -34,6 +35,10 @@ public class PlayerMovement : MonoBehaviour
 
     private Light2D globalLight;
 
+    private TextMeshProUGUI dialog;
+
+    private SpriteRenderer fog;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,6 +55,10 @@ public class PlayerMovement : MonoBehaviour
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         globalLight = GameObject.Find("Global Light 2D").GetComponent<Light2D>();
+
+        dialog = GameObject.Find("Dialog Label").GetComponent<TextMeshProUGUI>();
+
+        fog = GameObject.Find("Dialog Label").GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -188,10 +197,12 @@ public class PlayerMovement : MonoBehaviour
                 {
                     if (nearbyItem.CompareTag("EnergyDrink"))
                     {
+                        dialog.enabled = false;
                         StartCoroutine(moveFaster(5.0f));
                     }
                     else if (nearbyItem.CompareTag("FogMachine"))
                     {
+                        dialog.enabled = false;
                         StartCoroutine(turnOnGlobalLight(3.0f));
                     }
                     else if (nearbyItem.CompareTag("Fireworks"))
@@ -222,6 +233,21 @@ public class PlayerMovement : MonoBehaviour
             nearItem = true;
 
             nearbyItem = other.gameObject;
+
+            if (nearbyItem.CompareTag("EnergyDrink"))
+            {
+                dialog.enabled = true;
+                dialog.SetText("AcroHydrate. Looks like an energy drink. I didn’t have Horace Winterson pegged as a gym junkie, but no harm in trying it. <Press E to use>");
+            }
+            else if (nearbyItem.CompareTag("FogMachine"))
+            {
+                dialog.enabled = true;
+                dialog.SetText(" I wonder what’s in here? Looks like a tiny black box. Could this be the black box Horace wrote about? If so, maybe it’ll help me hide from him for a little while….  <Press E to use>");
+            }
+            else if (nearbyItem.CompareTag("Fireworks"))
+            {
+                
+            }
         }
         
     }
@@ -234,9 +260,13 @@ public class PlayerMovement : MonoBehaviour
     {
         globalLight.intensity = 0.5f;
 
+        fog.color = Color.gray;
+
         yield return new WaitForSecondsRealtime(duration);
 
         globalLight.intensity = 0.001f;
+
+        fog.color = Color.white;
     }
 
     IEnumerator moveFaster(float duration)

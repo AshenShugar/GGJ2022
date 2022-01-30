@@ -15,6 +15,8 @@ public class IntroDialog : MonoBehaviour
 
     public Animator textDisplayAnim;
 
+    public bool switchScenesWhenDone;
+
     private bool dialogStarted;
 
     public float initialDelay;
@@ -65,10 +67,13 @@ public class IntroDialog : MonoBehaviour
         {
             textDisplay.text = "";
 
-            if (SceneManager.GetActiveScene().buildIndex < SceneManager.sceneCountInBuildSettings - 1)
-            { SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); }//load next scene }
-            else
-            { SceneManager.LoadScene(0); }
+            if (switchScenesWhenDone)
+            {
+                if (SceneManager.GetActiveScene().buildIndex < SceneManager.sceneCountInBuildSettings - 1)
+                { SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); }//load next scene }
+                else
+                { SceneManager.LoadScene(0); }
+            }
         }
     }
 }
