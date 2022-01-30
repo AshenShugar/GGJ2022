@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -28,6 +29,11 @@ public class PlayerMovement : MonoBehaviour
 
     private GameManager gameManager;
 
+    private bool nearItem;
+    private GameObject nearbyItem;
+
+    private Light2D globalLight;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,7 +47,9 @@ public class PlayerMovement : MonoBehaviour
 
         playerAnim = GetComponent<Animator>();
 
-       gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+        globalLight = GameObject.Find("Global Light 2D").GetComponent<Light2D>();
     }
 
     // Update is called once per frame
@@ -170,6 +178,35 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void PickUpItem(InputAction.CallbackContext ctx)
+    {
+        if (!GameManager.isPaused)
+        {
+            if (ctx.performed)
+            {
+                if (nearItem)
+                {
+                    if (nearbyItem.CompareTag("EnergyDrink"))
+                    {
+                        StartCoroutine(moveFaster(5.0f));
+                    }
+                    else if (nearbyItem.CompareTag("FogMachine"))
+                    {
+                        StartCoroutine(turnOnGlobalLight(3.0f));
+                    }
+                    else if (nearbyItem.CompareTag("Fireworks"))
+                    {
+                       // do something
+                    }
+
+                    Destroy(nearbyItem);
+                    nearItem = false;
+                }
+            }
+            
+        }
+    }
+
     public void Pause(InputAction.CallbackContext ctx)
     {
         if (ctx.performed)
@@ -178,7 +215,36 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Item"))
+        {
+            nearItem = true;
 
+            nearbyItem = other.gameObject;
+        }
+        
+    }
 
     //CameraShake.Instance.ShakeCamera(6.0f, 0.25f);
+
+
+
+    IEnumerator turnOnGlobalLight (float duration)
+    {
+        globalLight.intensity = 0.5f;
+
+        yield return new WaitForSecondsRealtime(duration);
+
+        globalLight.intensity = 0.001f;
+    }
+
+    IEnumerator moveFaster(float duration)
+    {
+        moveSpeed = runSpeed;
+
+        yield return new WaitForSecondsRealtime(duration);
+
+        moveSpeed = walkSpeed;
+    }
 }
