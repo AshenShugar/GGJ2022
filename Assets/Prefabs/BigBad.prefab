@@ -72,13 +72,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bigBad: {fileID: 5808918297310789403}
   SlowSpeed: 1
-  FastSpeed: 6
+  FastSpeed: 4
   PlayerCharacter: {fileID: 0}
   PitchRange: 1.5
   HeartBeatUpdateTime: 0.1
   SafeDistanceFromPlayer: 10
   _HBMixer: {fileID: 24100000, guid: a998f0c8992db49f0b4ce29db1fc21ef, type: 2}
   _HBSource: {fileID: 1073980515}
+  clownLaugh: {fileID: 8300000, guid: 0cfea5c72d5844363a0b43579b97f26c, type: 3}
   GameRunning: 1
 --- !u!82 &1073980515
 AudioSource:

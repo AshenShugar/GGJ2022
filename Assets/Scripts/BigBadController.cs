@@ -22,6 +22,11 @@ public class BigBadController : MonoBehaviour
 	[SerializeField]
 	private AudioSource _HBSource;
 	private GameManager _gm;
+	[SerializeField]
+	private AudioClip clownLaugh;
+
+	private IEnumerator hbCR;
+
 
 	public bool GameRunning = true;
 
@@ -37,16 +42,31 @@ public class BigBadController : MonoBehaviour
 
 		if (_gm == null)
 			_gm = FindObjectOfType<GameManager> ();
-		
-		StartCoroutine (HeartBeatControl2());
+
+		hbCR = HeartBeatControl2 ();
+		StartCoroutine (hbCR);
 	}
 
 	public void OnCollisionEnter2D (Collision2D collision)
 	{
 		if (collision.gameObject.tag == "Player") {
 			// Game over
-			_gm.ChangeScene (GameManager.Scene.BadEnd);
+			StopCoroutine (hbCR);
+			StartCoroutine (GameOverMan ());
 		}
+	}
+
+	// Wait for the clown to finish laughing
+	private IEnumerator GameOverMan ()
+	{
+		while (_HBSource.isPlaying) {
+			yield return null;
+		}
+		_HBSource.clip = clownLaugh;
+		_HBSource.time = 0;
+		_HBSource.Play ();
+		yield return new WaitForSeconds (_HBSource.clip.length);
+		_gm.ChangeScene (GameManager.Scene.BadEnd);
 	}
 
 	public IEnumerator HeartBeatControl ()

@@ -318,6 +318,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5808918297310789403, guid: f7856314053914afc92a66e388990ed1, type: 3}
+      propertyPath: m_Speed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5808918297310789412, guid: f7856314053914afc92a66e388990ed1, type: 3}
+      propertyPath: FastSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5808918297310789412, guid: f7856314053914afc92a66e388990ed1, type: 3}
+      propertyPath: clownLaugh
+      value: 
+      objectReference: {fileID: 8300000, guid: 0cfea5c72d5844363a0b43579b97f26c, type: 3}
     - target: {fileID: 5808918297310789413, guid: f7856314053914afc92a66e388990ed1, type: 3}
       propertyPath: m_Name
       value: BigBad
