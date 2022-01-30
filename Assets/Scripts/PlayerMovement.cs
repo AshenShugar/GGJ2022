@@ -59,8 +59,8 @@ public class PlayerMovement : MonoBehaviour
             playerAnim.SetTrigger("Walk");
 
 
-            float angle = Mathf.Atan2(moveInput.y, moveInput.x) * Mathf.Rad2Deg;
-            rb.rotation = angle-90;
+            //float angle = Mathf.Atan2(moveInput.y, moveInput.x) * Mathf.Rad2Deg;
+            //rb.rotation = angle-90;
         }
         else
         {
@@ -73,9 +73,9 @@ public class PlayerMovement : MonoBehaviour
         Vector3 dir = viewportMousePos - viewportPlayerPos;
 
         float rotAngle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        //rb.rotation = Quaternion.AngleAxis((-rotAngle + 90), Vector3.up);
 
-        flashlight.transform.rotation = Quaternion.Euler(0, 0, rotAngle - 90);
+        //flashlight.transform.rotation = Quaternion.Euler(0, 0, rotAngle - 90);
+        rb.rotation = rotAngle - 90;
     }
 
 	public void UpdateBigBad ()
