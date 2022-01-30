@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
+using TMPro;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -22,9 +24,22 @@ public class PlayerMovement : MonoBehaviour
     public float runSpeed = 9.0f;
     private float moveSpeed;
 
-	  private BigBadController BBC;
+    private Animator playerAnim;
+
+	private BigBadController BBC;
 
     private GameManager gameManager;
+
+    private bool nearItem;
+    private GameObject nearbyItem;
+
+    private Light2D globalLight;
+
+    private TextMeshProUGUI dialog;
+
+    private SpriteRenderer fog;
+
+    private GameObject pickupPrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -35,9 +50,19 @@ public class PlayerMovement : MonoBehaviour
 
         flashlight = transform.Find("Flashlight").gameObject;
         torch = transform.Find("Torch").gameObject;
-		   BBC = FindObjectOfType<BigBadController> ();
+		BBC = FindObjectOfType<BigBadController> ();
 
-       gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        playerAnim = GetComponent<Animator>();
+
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+        globalLight = GameObject.Find("Global Light 2D").GetComponent<Light2D>();
+
+        dialog = GameObject.Find("Dialog Label").GetComponent<TextMeshProUGUI>();
+
+        fog = GameObject.Find("Fog").GetComponent<SpriteRenderer>();
+
+        pickupPrefab = Resources.Load("cfx_pickup") as GameObject;
     }
 
     // Update is called once per frame
@@ -49,7 +74,19 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         //movement
-        rb.velocity = moveInput * moveSpeed;
+        if (moveInput != Vector2.zero)
+        {
+            rb.velocity = moveInput * moveSpeed;
+            playerAnim.SetTrigger("Walk");
+
+
+            //float angle = Mathf.Atan2(moveInput.y, moveInput.x) * Mathf.Rad2Deg;
+            //rb.rotation = angle-90;
+        }
+        else
+        {
+            playerAnim.SetTrigger("Idle");
+        }
 
         //aiming of light
         Vector3 viewportMousePos = Camera.main.ScreenToViewportPoint(rawAimInput);
@@ -57,9 +94,9 @@ public class PlayerMovement : MonoBehaviour
         Vector3 dir = viewportMousePos - viewportPlayerPos;
 
         float rotAngle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        //rb.rotation = Quaternion.AngleAxis((-rotAngle + 90), Vector3.up);
 
-        flashlight.transform.rotation = Quaternion.Euler(0, 0, rotAngle - 90);
+        //flashlight.transform.rotation = Quaternion.Euler(0, 0, rotAngle - 90);
+        rb.rotation = rotAngle - 90;
     }
 
 	public void UpdateBigBad ()
@@ -154,6 +191,39 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void PickUpItem(InputAction.CallbackContext ctx)
+    {
+        if (!GameManager.isPaused)
+        {
+            if (ctx.performed)
+            {
+                if (nearItem)
+                {
+                    if (nearbyItem.CompareTag("EnergyDrink"))
+                    {
+                        dialog.enabled = false;
+                        StartCoroutine(moveFaster(5.0f));
+                    }
+                    else if (nearbyItem.CompareTag("FogMachine"))
+                    {
+                        dialog.enabled = false;
+                        StartCoroutine(turnOnGlobalLight(3.0f));
+                    }
+                    else if (nearbyItem.CompareTag("Fireworks"))
+                    {
+                       // do something
+                    }
+
+                    Instantiate(pickupPrefab, rb.position, Quaternion.identity);
+
+                    Destroy(nearbyItem);
+                    nearItem = false;
+                }
+            }
+            
+        }
+    }
+
     public void Pause(InputAction.CallbackContext ctx)
     {
         if (ctx.performed)
@@ -162,7 +232,55 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Item"))
+        {
+            nearItem = true;
 
+            nearbyItem = other.gameObject;
+
+            if (nearbyItem.CompareTag("EnergyDrink"))
+            {
+                dialog.enabled = true;
+                dialog.SetText("AcroHydrate. Looks like an energy drink. I didn’t have Horace Winterson pegged as a gym junkie, but no harm in trying it. <Press E to use>");
+            }
+            else if (nearbyItem.CompareTag("FogMachine"))
+            {
+                dialog.enabled = true;
+                dialog.SetText(" I wonder what’s in here? Looks like a tiny black box. Could this be the black box Horace wrote about? If so, maybe it’ll help me hide from him for a little while….  <Press E to use>");
+            }
+            else if (nearbyItem.CompareTag("Fireworks"))
+            {
+                
+            }
+        }
+        
+    }
 
     //CameraShake.Instance.ShakeCamera(6.0f, 0.25f);
+
+
+
+    IEnumerator turnOnGlobalLight (float duration)
+    {
+        globalLight.intensity = 0.5f;
+
+        fog.material.color = Color.gray;
+
+        yield return new WaitForSecondsRealtime(duration);
+
+        globalLight.intensity = 0.001f;
+
+        fog.material.color = Color.white;
+    }
+
+    IEnumerator moveFaster(float duration)
+    {
+        moveSpeed = runSpeed;
+
+        yield return new WaitForSecondsRealtime(duration);
+
+        moveSpeed = walkSpeed;
+    }
 }
