@@ -41,6 +41,15 @@ public class PlayerMovement : MonoBehaviour
 
     private GameObject pickupPrefab;
 
+	private bool SmokeBombActive = false;
+	private bool FireworksActive = false;
+	[SerializeField]
+	private float SmokeBombDuration = 5.0f;
+	[SerializeField]
+	private float FireworksDuration = 5.0f;
+	[SerializeField]
+	private float DrinkDuration = 3.0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -101,13 +110,18 @@ public class PlayerMovement : MonoBehaviour
 
 	public void UpdateBigBad ()
 	{
-		if (usingTorch) {
-			if (torch.activeInHierarchy)
+		if (!SmokeBombActive) {
+			if (FireworksActive) {
 				BBC.Target = transform.position;
-		} else
-			if (flashlight.activeInHierarchy)
-				BBC.Target = transform.position;
-
+				BBC.HasTarget = true;
+			} else if (usingTorch) {
+				if (torch.activeInHierarchy)
+					BBC.Target = transform.position;
+			} else {
+				if (flashlight.activeInHierarchy)
+					BBC.Target = transform.position;
+			}
+		}
 	}
 
     public void Move(InputAction.CallbackContext ctx)
@@ -202,16 +216,16 @@ public class PlayerMovement : MonoBehaviour
                     if (nearbyItem.CompareTag("EnergyDrink"))
                     {
                         dialog.enabled = false;
-                        StartCoroutine(moveFaster(5.0f));
+                        StartCoroutine(moveFaster(DrinkDuration));
                     }
                     else if (nearbyItem.CompareTag("FogMachine"))
                     {
                         dialog.enabled = false;
-                        StartCoroutine(turnOnGlobalLight(3.0f));
+						StartCoroutine(SmokeBombGoesOff(SmokeBombDuration));
                     }
                     else if (nearbyItem.CompareTag("Fireworks"))
                     {
-                       // do something
+						StartCoroutine (turnOnGlobalLight (FireworksDuration));
                     }
 
                     Instantiate(pickupPrefab, rb.position, Quaternion.identity);
@@ -252,26 +266,41 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (nearbyItem.CompareTag("Fireworks"))
             {
-                
+				dialog.enabled = true;
+				dialog.SetText (" This box looks like it contains something. It’s nailed shut, but with some blunt force I could pry it open… Should I try it?  <Press E to use>");
             }
         }
         
     }
 
-    //CameraShake.Instance.ShakeCamera(6.0f, 0.25f);
+	//CameraShake.Instance.ShakeCamera(6.0f, 0.25f);
 
+	IEnumerator SmokeBombGoesOff (float duration)
+	{
+		Vector3 oldTarget = BBC.Target;
+		SmokeBombActive = true;
+		BBC.Target = BBC.transform.position;	// Make the big bad stop where it is.
+
+		yield return new WaitForSeconds (duration);
+
+		BBC.Target = oldTarget; // After the fog goes away, return to what it was doing.
+		SmokeBombActive = false;
+		UpdateBigBad ();
+	}
 
 
     IEnumerator turnOnGlobalLight (float duration)
     {
-        globalLight.intensity = 0.5f;
+		FireworksActive = true;
+        globalLight.intensity = 0.75f;
 
+		// Changed this to be for fireworks, so when bored, make it colourful and fade in and out.
         fog.material.color = Color.gray;
 
         yield return new WaitForSecondsRealtime(duration);
 
         globalLight.intensity = 0.001f;
-
+		FireworksActive = false;
         fog.material.color = Color.white;
     }
 

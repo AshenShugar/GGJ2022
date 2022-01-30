@@ -119,6 +119,9 @@ public class BigBadController : MonoBehaviour
 	}
 
 	public Vector3 Target {
+		get {
+			return _targetDestination;
+		}
 		set {
 				// if the target destination has a z value that doesn't match the navmesh, it won't move.
 				_targetDestination = value;
